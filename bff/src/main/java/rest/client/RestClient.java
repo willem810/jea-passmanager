@@ -3,6 +3,7 @@ package rest.client;
 import interceptor.LogError;
 import interceptor.Logging;
 import service.AuthService;
+import utils.HealthCheck;
 
 import javax.inject.Inject;
 import javax.ws.rs.InternalServerErrorException;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @LogError
 @Logging
-public class RestClient {
+public abstract class RestClient extends HealthCheck {
     Client client = ClientBuilder.newClient();
     private final String AUTHORIZATION_HEADER = "Authorization";
     @Inject

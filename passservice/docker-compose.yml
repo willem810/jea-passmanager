@@ -4,9 +4,7 @@ services:
   app:
     build: .
     ports:
-     - "8093:8080"
+     - "8083:8080"
      - "4843:4848"
-    env_file:
-     - ./environment.env
     volumes:
      - ./payara/config:/opt/payara5/glassfish/domains/domain1/config

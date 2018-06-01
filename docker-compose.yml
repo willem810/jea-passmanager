@@ -22,18 +22,32 @@ services:
       context: ./passservice
     ports:
      - "8083:8080"
+     - "4843:4848"
     env_file:
      - ./environment.env
     volumes:
      - ./passservice/payara/config:/opt/payara5/glassfish/domains/domain1/config
 
   generator:
-    build: .
+    build: 
+      context: ./generator
     ports:
      - "8085:8080"
     env_file:
      - ./environment.env
 
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    build: ./kafka
+    ports:
+      - "9092:9092"
+    env_file:
+     - ./environment.env
+    volumes:
+      - //var/run/docker.sock:/var/run/docker.sock
      
   # passservice2:
   #   build: 

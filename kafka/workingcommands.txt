@@ -1,0 +1,4 @@
+
+.\bin\windows\kafka-topics.bat --create --zookeeper 192.168.0.20:2181 --partitions 4 --replication-factor 1 --topic test1
+
+.\bin\windows\kafka-console-consumer.bat --topic test1 --bootstrap-server 192.168.0.20:9092

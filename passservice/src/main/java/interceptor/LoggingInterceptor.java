@@ -13,11 +13,13 @@ public class LoggingInterceptor {
     public Object log(InvocationContext context) throws Exception {
         String name = context.getMethod().getName();
         String params = Arrays.toString(context.getParameters());
-        System.out.println("LOGGING: name = " +name + " params = "+ params);
+        System.out.println("LOGGING: name = " + name + " params = " + params);
 
         Object resp = context.proceed();
 
-        System.out.println("LOGGING: Response = " + resp);
+        if (resp != null) {
+            System.out.println("LOGGING: Response = " + resp.toString());
+        }
 
         return resp;
     }

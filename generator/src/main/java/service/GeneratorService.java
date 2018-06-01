@@ -1,10 +1,14 @@
 package service;
 
 import domain.PasswordGenerator;
+import enums.ReadyStatus;
+import utils.HealthCheck;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Stateless;
 
-public class GeneratorService {
+@Stateless
+public class GeneratorService extends HealthCheck {
     private final int passLength = 20;
     private PasswordGenerator generator;
 
@@ -16,6 +20,8 @@ public class GeneratorService {
                 .useUpper(true)
                 .usePunctuation(true)
                 .build();
+
+        setStatus(ReadyStatus.AVAILABLE);
     }
 
     public String generatePassword(int length) {

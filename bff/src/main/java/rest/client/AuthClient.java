@@ -2,9 +2,12 @@ package rest.client;
 
 import domain.Credentials;
 import dto.Password;
+import enums.ReadyStatus;
+import utils.HealthCheck;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
+import javax.json.JsonObject;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -20,6 +23,7 @@ public class AuthClient extends RestClient {
     private static String AUTHSERVICE_BASE_URL = System.getenv("AUTHSERVICE_BASE_URL");
     private static String AUTHSERVICE_BASE_PORT = System.getenv("AUTHSERVICE_BASE_PORT");
     private static final String AUTHSERVICE_LOGIN_REL = "/passmanager-authservice/resources/auth/login";
+    private static final String AUTHSERVICE_STATUS = "/passmanager-authservice/resources/health";
     private final String AUTHORIZATION_HEADER = "Authorization";
 
     @PostConstruct
@@ -30,6 +34,8 @@ public class AuthClient extends RestClient {
         if (AUTHSERVICE_BASE_PORT == null) {
             AUTHSERVICE_BASE_PORT = "8082";
         }
+
+
     }
 
     public String login(Credentials credentials) throws WebApplicationException {
@@ -52,4 +58,18 @@ public class AuthClient extends RestClient {
         return url;
     }
 
+    @Override
+    public ReadyStatus getStatus() {
+        try {
+            JsonObject obj = get(getUrl(AUTHSERVICE_STATUS), JsonObject.class);
+            String systemStatus = obj.getString("System");
+            ReadyStatus status = Enum.valueOf(ReadyStatus.class, systemStatus);
+            setStatus(status);
+            return status;
+        } catch (Exception e) {
+            setStatus(ReadyStatus.UNAVAILABLE);
+
+            return ReadyStatus.UNAVAILABLE;
+        }
+    }
 }

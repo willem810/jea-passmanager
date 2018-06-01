@@ -14,15 +14,22 @@ public class LoggingInterceptor {
 
     @AroundInvoke
     public Object log(InvocationContext context) throws Exception {
+        String ctxData = context.getContextData().toString();
         String name = context.getMethod().getName();
         String params = Arrays.toString(context.getParameters());
-        System.out.println("LOGGING: name = " + name + " params = " + params);
+        log("LOGGING: name = " + name + " params = " + params + ", Context data: " + ctxData);
 
         Object resp = context.proceed();
+        if (resp == null) {
+            return resp;
+        }
 
-        System.out.println("LOGGING: Response = " + resp);
-        log.log(Level.INFO, resp.toString());
+        log("LOGGING: Response = " + resp.toString());
 
         return resp;
+    }
+
+    private void log(String message) {
+        log.log(Level.INFO, message);
     }
 }

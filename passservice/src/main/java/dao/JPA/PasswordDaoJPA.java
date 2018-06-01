@@ -3,16 +3,22 @@ package dao.JPA;
 import dao.PasswordDAO;
 import domain.Password;
 import interceptor.Managed;
+import service.PasswordService;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.NotFoundException;
 import java.util.List;
 
 @Stateless
 public class PasswordDaoJPA implements PasswordDAO {
+    @Inject
+    PasswordService passwordService;
+
     @PersistenceContext(unitName = "PassManagerPU")
     private EntityManager em;
 
@@ -26,11 +32,25 @@ public class PasswordDaoJPA implements PasswordDAO {
     }
 
     @Override
+    public Password getPassword(long id) throws NotFoundException {
+        TypedQuery<Password> query = em.createNamedQuery("pass.findById", Password.class);
+        query.setParameter("id", id);
+        List<Password> result = query.getResultList();
+        return result.get(0);
+    }
+
+    @Override
     public List<Password> getPasswords(String user) throws NotFoundException {
         TypedQuery<Password> query = em.createNamedQuery("pass.findByUser", Password.class);
         query.setParameter("username", user);
         List<Password> result = query.getResultList();
         return result;
+    }
+
+    @Override
+    public List<Password> getAllPasswords() {
+        Query query = em.createQuery("SELECT p FROM Password p");
+        return query.getResultList();
     }
 
     @Override
@@ -40,7 +60,7 @@ public class PasswordDaoJPA implements PasswordDAO {
 
     @Override
     public void updatePassword(Password password) {
-        em.persist(password);
+        getPassword(password.getUsername(), password.getService()).setPassword(password.getPassword());
     }
 
     @Override

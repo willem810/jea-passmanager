@@ -42,11 +42,22 @@ public class PasswordResource {
     }
 
     @POST
-    @Path("")
     @Secured
     public Response setPassword(Password pass) {
         try {
             passwordService.setPassword(pass);
+            return Response.ok().build();
+        } catch (NotFoundException e) {
+            return Response.status(404, e.getMessage()).build();
+        }
+    }
+
+    @POST
+    @Path("/update")
+    @Secured
+    public Response updatePassword(Password pass) {
+        try {
+            passwordService.updatePassword(pass);
             return Response.ok().build();
         } catch (NotFoundException e) {
             return Response.status(404, e.getMessage()).build();

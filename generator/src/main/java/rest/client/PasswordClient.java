@@ -1,15 +1,13 @@
 package rest.client;
 
 import domain.Password;
-import dto.Password;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import java.util.Arrays;
-import java.util.List;
 
 @Stateless
 public class PasswordClient extends RestClient {
@@ -23,6 +21,7 @@ public class PasswordClient extends RestClient {
     private static String PASSSERVICE_GETPASSWORD_REL = "/passmanager-passservice/resources/password/%s/%s";
     private static String PASSSERVICE_SETPASSWORD_REL = "/passmanager-passservice/resources/password";
     private static String PASSSERVICE_REMOVEPASSWORD_REL = "/passmanager-passservice/resources/password/%s/%s/remove";
+    private static String PASSSERVICE_UPDATEPASSWORD_REL = "/passmanager-passservice/resources/password/update";
 
 
     @PostConstruct
@@ -36,9 +35,9 @@ public class PasswordClient extends RestClient {
     }
 
 
-    public void setPassword(Password pass) throws WebApplicationException {
-        String url = getUrl(PASSSERVICE_SETPASSWORD_REL);
-        post(url, pass);
+    public void updatePassword(Password pass) throws WebApplicationException {
+        String url = getUrl(PASSSERVICE_UPDATEPASSWORD_REL);
+        postSecured(url, pass);
     }
 
 

@@ -8,11 +8,12 @@ import java.util.concurrent.TimeUnit;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "pass.findByUser", query = "SELECT p FROM Password p WHERE p.username = :username"),
+        @NamedQuery(name = "pass.findById", query = "SELECT p FROM Password p WHERE p.id = :id"),
         @NamedQuery(name = "pass.findByUserAndService", query = "SELECT p FROM Password p WHERE p.username = :username AND p.service = :service")
 })
 public class Password {
 
-    private final long timeValid = TimeUnit.DAYS.toMillis(30);
+    private final long timeValid = TimeUnit.MILLISECONDS.toMillis(30);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,6 +77,12 @@ public class Password {
     public boolean expired() {
         long now = System.currentTimeMillis();
         return (now - date) >= timeValid;
+    }
+
+
+    @Override
+    public String toString() {
+        return String.format("%s - %s - %s - %s", id, username, service, password);
     }
 }
 

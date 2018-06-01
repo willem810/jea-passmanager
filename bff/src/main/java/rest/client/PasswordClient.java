@@ -1,9 +1,11 @@
 package rest.client;
 
 import dto.Password;
+import enums.ReadyStatus;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
+import javax.json.JsonObject;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.NotFoundException;
@@ -26,6 +28,7 @@ public class PasswordClient extends RestClient {
     private static String PASSSERVICE_GETPASSWORD_REL = "/passmanager-passservice/resources/password/%s/%s";
     private static String PASSSERVICE_SETPASSWORD_REL = "/passmanager-passservice/resources/password";
     private static String PASSSERVICE_REMOVEPASSWORD_REL = "/passmanager-passservice/resources/password/%s/%s/remove";
+    private static String PASSSERVICE_STATUS = "/passmanager-passservice/resources/health";
 
 
     @PostConstruct
@@ -78,4 +81,19 @@ public class PasswordClient extends RestClient {
         return url;
     }
 
+    @Override
+    public ReadyStatus getStatus() {
+        try {
+            JsonObject obj = get(getUrl(PASSSERVICE_STATUS), JsonObject.class);
+            String systemStatus = obj.getString("System");
+            ReadyStatus status = Enum.valueOf(ReadyStatus.class, systemStatus);
+            setStatus(status);
+            return status;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            setStatus(ReadyStatus.UNAVAILABLE);
+
+            return ReadyStatus.UNAVAILABLE;
+        }
+    }
 }

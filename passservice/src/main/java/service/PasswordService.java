@@ -14,14 +14,13 @@ public class PasswordService {
     @Inject
     PasswordDAO passwordDAO;
 
+    public List<Password> getAllPasswords() {
+        return passwordDAO.getAllPasswords();
+    }
+
 
     public Password getPassword(String user, String service) throws NotFoundException {
-        Password pass = passwordDAO.getPassword(user, service);
-        if(!pass.expired()){
-            return pass;
-        } else {
-
-        }
+        return passwordDAO.getPassword(user, service);
     }
 
     public List<Password> getPasswords(String user) throws NotFoundException {

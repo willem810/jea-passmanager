@@ -1,9 +1,11 @@
 package util;
 
+import enums.ReadyStatus;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -12,22 +14,24 @@ import java.security.PublicKey;
 import java.util.*;
 
 @Stateless
-public class AuthController {
+public class AuthController extends HealthCheck {
     private static final String AUTHENTICATION_SCHEME = "Bearer";
     private static final int JWT_DURATION_MIN = 30;
 
     private static Map<String, Object> rsaKeys = null;
 
-
-    public AuthController() {
-
+    @PostConstruct
+    private void init() {
+        setStatus(ReadyStatus.STARTING);
         try {
-            if(rsaKeys == null) {
+            if (rsaKeys == null) {
                 System.out.println("generating keys");
                 rsaKeys = getRSAKeys();
                 System.out.println("generated keys");
             }
+            setStatus(ReadyStatus.AVAILABLE);
         } catch (Exception e) {
+            setStatus(ReadyStatus.FAILED);
             e.printStackTrace();
         }
     }

@@ -21,6 +21,9 @@ public class RestClient {
     Client client = ClientBuilder.newClient();
     private final String AUTHORIZATION_HEADER = "Authorization";
 
+    @Inject
+    AuthClient authClient;
+
     public <T> T get(String url, Class<T> aClass, MultivaluedMap<String, Object> headers) throws WebApplicationException {
         Response resp = client.target(url)
                 .request(MediaType.APPLICATION_JSON)
@@ -68,31 +71,31 @@ public class RestClient {
         return post(url, null, headers);
     }
 
-//    public <T> T getSecured(String user, String url, Class<T> aClass) throws WebApplicationException {
-//        List<Object> authBearer = new ArrayList<>();
-//        authBearer.add(authService.getJwtBearer(user));
-//
-//        MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
-//        headers.put(AUTHORIZATION_HEADER, authBearer);
-//
-//        return get(url, aClass, headers);
-//    }
-//
-//    public Response getSecured(String user, String url) throws WebApplicationException {
-//        return getSecured(user, url, Response.class);
-//    }
-//
-//    public Response postSecured(String user, String url, Object body) throws WebApplicationException {
-//        List<Object> authBearer = new ArrayList<>();
-//        authBearer.add(authService.getJwtBearer(user));
-//
-//        MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
-//        headers.put(AUTHORIZATION_HEADER, authBearer);
-//
-//        return post(url, body, headers);
-//    }
-//
-//    public Response postSecured(String user, String url) throws WebApplicationException {
-//        return postSecured(user, url, null);
-//    }
+    public <T> T getSecured(String url, Class<T> aClass) throws WebApplicationException {
+        List<Object> authBearer = new ArrayList<>();
+        authBearer.add(authClient.getJwtBearer());
+
+        MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
+        headers.put(AUTHORIZATION_HEADER, authBearer);
+
+        return get(url, aClass, headers);
+    }
+
+    public Response getSecured(String user, String url) throws WebApplicationException {
+        return getSecured(url, Response.class);
+    }
+
+    public Response postSecured(String url, Object body) throws WebApplicationException {
+        List<Object> authBearer = new ArrayList<>();
+        authBearer.add(authClient.getJwtBearer());
+
+        MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
+        headers.put(AUTHORIZATION_HEADER, authBearer);
+
+        return post(url, body, headers);
+    }
+
+    public Response postSecured(String user, String url) throws WebApplicationException {
+        return postSecured(url, null);
+    }
 }

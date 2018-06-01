@@ -15,6 +15,7 @@ public class AuthDaoJPA implements AuthDao {
 
     @PostConstruct
     public void init() {
+        passwords.put("passUpdater", "pass");
         passwords.put("willem", "pass");
         passwords.put("joris", "pass");
         passwords.put("lorenzo", "pass");

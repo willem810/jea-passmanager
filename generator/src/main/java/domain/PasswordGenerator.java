@@ -1,5 +1,8 @@
 package domain;
 
+import enums.ReadyStatus;
+import utils.HealthCheck;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -44,7 +47,7 @@ public final class PasswordGenerator {
          * (abc...xyz). Default false.
          *
          * @param useLower true in case you would like to include lower
-         * characters (abc...xyz). Default false.
+         *                 characters (abc...xyz). Default false.
          * @return the builder for chaining.
          */
         public PasswordGeneratorBuilder useLower(boolean useLower) {
@@ -57,7 +60,7 @@ public final class PasswordGenerator {
          * (ABC...XYZ). Default false.
          *
          * @param useUpper true in case you would like to include upper
-         * characters (ABC...XYZ). Default false.
+         *                 characters (ABC...XYZ). Default false.
          * @return the builder for chaining.
          */
         public PasswordGeneratorBuilder useUpper(boolean useUpper) {
@@ -70,7 +73,7 @@ public final class PasswordGenerator {
          * Default false.
          *
          * @param useDigits true in case you would like to include digit
-         * characters (123..). Default false.
+         *                  characters (123..). Default false.
          * @return the builder for chaining.
          */
         public PasswordGeneratorBuilder useDigits(boolean useDigits) {
@@ -83,7 +86,7 @@ public final class PasswordGenerator {
          * (!@#..). Default false.
          *
          * @param usePunctuation true in case you would like to include
-         * punctuation characters (!@#..). Default false.
+         *                       punctuation characters (!@#..). Default false.
          * @return the builder for chaining.
          */
         public PasswordGeneratorBuilder usePunctuation(boolean usePunctuation) {

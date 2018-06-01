@@ -3,13 +3,13 @@
   <security-configurations>
     <authentication-service default="true" name="adminAuth" use-password-credential="true">
       <security-provider provider-name="adminSpc" name="spcrealm" type="LoginModule">
-        <login-module-config module-class="com.sun.enterprise.admin.util.AdminLoginModule" control-flag="sufficient" name="adminSpecialLM">
+        <login-module-config control-flag="sufficient" module-class="com.sun.enterprise.admin.util.AdminLoginModule" name="adminSpecialLM">
           <property name="config" value="server-config"></property>
           <property name="auth-realm" value="admin-realm"></property>
         </login-module-config>
       </security-provider>
       <security-provider provider-name="adminFile" name="filerealm" type="LoginModule">
-        <login-module-config module-class="com.sun.enterprise.security.auth.login.FileLoginModule" control-flag="sufficient" name="adminFileLM">
+        <login-module-config control-flag="sufficient" module-class="com.sun.enterprise.security.auth.login.FileLoginModule" name="adminFileLM">
           <property name="config" value="server-config"></property>
           <property name="auth-realm" value="admin-realm"></property>
         </login-module-config>
@@ -23,7 +23,7 @@
   </security-configurations>
   <managed-job-config></managed-job-config>
   <system-applications>
-    <application context-root="" object-type="system-admin" directory-deployed="true" name="__admingui" location="${com.sun.aas.installRootURI}/lib/install/applications/__admingui">
+    <application context-root="" object-type="system-admin" name="__admingui" directory-deployed="true" location="${com.sun.aas.installRootURI}/lib/install/applications/__admingui">
       <module name="__admingui">
         <engine sniffer="web"></engine>
         <engine sniffer="security"></engine>
@@ -49,7 +49,7 @@
     <jdbc-connection-pool is-isolation-level-guaranteed="false" datasource-classname="org.h2.jdbcx.JdbcDataSource" name="H2Pool" res-type="javax.sql.DataSource">
       <property name="URL" value="jdbc:h2:${com.sun.aas.instanceRoot}/lib/databases/embedded_default;AUTO_SERVER=TRUE"></property>
     </jdbc-connection-pool>
-    <connector-connection-pool resource-adapter-name="jmsra" max-pool-size="250" steady-pool-size="1" name="jms/__defaultConnectionFactory-Connection-Pool" connection-definition-name="javax.jms.ConnectionFactory"></connector-connection-pool>
+    <connector-connection-pool max-pool-size="250" resource-adapter-name="jmsra" steady-pool-size="1" name="jms/__defaultConnectionFactory-Connection-Pool" connection-definition-name="javax.jms.ConnectionFactory"></connector-connection-pool>
     <connector-resource pool-name="jms/__defaultConnectionFactory-Connection-Pool" object-type="system-all-req" jndi-name="jms/__defaultConnectionFactory"></connector-resource>
     <managed-executor-service object-type="system-all" jndi-name="concurrent/__defaultManagedExecutorService"></managed-executor-service>
     <managed-scheduled-executor-service object-type="system-all" jndi-name="concurrent/__defaultManagedScheduledExecutorService"></managed-scheduled-executor-service>
@@ -131,7 +131,7 @@
       <phone-home-runtime-configuration phone-home-id="3d822b11-6928-4ed1-8e02-f0211030b4f5"></phone-home-runtime-configuration>
       <zendesk-support-configuration></zendesk-support-configuration>
       <jms-service default-jms-host="default_JMS_host" type="EMBEDDED">
-        <jms-host port="${JMS_PROVIDER_PORT}" name="default_JMS_host" host="localhost"></jms-host>
+        <jms-host port="${JMS_PROVIDER_PORT}" host="localhost" name="default_JMS_host"></jms-host>
       </jms-service>
       <web-container>
         <session-config>
@@ -292,7 +292,7 @@
         </transports>
       </network-config>
       <thread-pools>
-        <thread-pool name="admin-thread-pool" min-thread-pool-size="1" max-queue-size="256" max-thread-pool-size="15"></thread-pool>
+        <thread-pool name="admin-thread-pool" min-thread-pool-size="1" max-thread-pool-size="15" max-queue-size="256"></thread-pool>
         <thread-pool name="http-thread-pool"></thread-pool>
         <thread-pool name="thread-pool-1" max-thread-pool-size="200"></thread-pool>
       </thread-pools>
@@ -345,7 +345,7 @@
       </ejb-container>
       <mdb-container></mdb-container>
       <jms-service addresslist-behavior="priority" default-jms-host="default_JMS_host" type="EMBEDDED">
-        <jms-host port="${JMS_PROVIDER_PORT}" host="localhost" name="default_JMS_host"></jms-host>
+        <jms-host port="${JMS_PROVIDER_PORT}" name="default_JMS_host" host="localhost"></jms-host>
       </jms-service>
       <log-service file="${com.sun.aas.instanceRoot}/logs/server.log" log-rotation-limit-in-bytes="2000000">
         <module-log-levels></module-log-levels>
@@ -498,7 +498,7 @@
       <thread-pools>
         <thread-pool name="http-thread-pool"></thread-pool>
         <thread-pool name="thread-pool-1" min-thread-pool-size="2" max-thread-pool-size="200"></thread-pool>
-        <thread-pool name="admin-thread-pool" min-thread-pool-size="1" max-queue-size="256" max-thread-pool-size="15"></thread-pool>
+        <thread-pool name="admin-thread-pool" min-thread-pool-size="1" max-thread-pool-size="15" max-queue-size="256"></thread-pool>
       </thread-pools>
       <group-management-service>
         <failure-detection></failure-detection>
@@ -526,11 +526,11 @@
   <deployment-groups></deployment-groups>
   <clusters></clusters>
   <applications>
-    <application deployment-time="2051" context-root="/passmanager-passservice" object-type="user" name="passmanager-passservice" location="${com.sun.aas.instanceRootURI}/applications/passmanager-passservice/" time-deployed="1527435009149">
+    <application deployment-time="33665" context-root="/passmanager-passservice" object-type="user" name="passmanager-passservice" location="${com.sun.aas.instanceRootURI}/applications/passmanager-passservice/" time-deployed="1527875419271">
       <property name="archiveType" value="war"></property>
       <property name="cdiDevModeEnabled" value="false"></property>
       <property name="appLocation" value="${com.sun.aas.instanceRootURI}/applications/__internal/passmanager-passservice/passmanager-passservice.war"></property>
-      <property name="org.glassfish.ejb.container.application_unique_id" value="100101978417463296"></property>
+      <property name="org.glassfish.ejb.container.application_unique_id" value="100130842373259264"></property>
       <property name="defaultAppName" value="passmanager-passservice"></property>
       <module name="passmanager-passservice">
         <engine sniffer="cdi"></engine>
